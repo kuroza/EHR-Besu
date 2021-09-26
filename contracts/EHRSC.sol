@@ -2,38 +2,60 @@
 pragma solidity >=0.4.22 <0.8.0;
 
 contract EHRSC {
-    // address[] private persons;
-    address private doctor;
-    // mapping(address => Person) public persons;
-
     struct Person {
+        string name;
         bool registered;
+        bool verifiedDoctor;
+        bool verifiedPatient;
+        mapping(uint256 => Request) requests;
     }
 
-    constructor() public {
-        doctor = 0x4256472057Bf645F995DD8EF24480C367e154bE7;
-        // doctor = 0x2a230D5b4557C27a777095f5329C0F172457b157;
-        // persons.push('0x2a230D5b4557C27a777095f5329C0F172457b157');
+    struct Request {
+        address requester;
+        uint256 documentNumber;
     }
 
-    function requestDocuments() public view returns (string memory) {
-        // require(
-        //     persons[msg.sender].registered,
-        //     "Unregistered person cannot call this function"
-        // );
-        if (doctor == msg.sender) return "Documents retrieved";
-        else return "Doctor not registered";
+    mapping(address => Person) public persons;
+
+    constructor() public {}
+
+    function registerDoctor(string memory _name) public payable {
+        require(!persons[msg.sender].registered, "Person already registered");
+
+        persons[msg.sender] = Person(_name, true, true, false);
     }
 
-    // function getName() public view returns (string memory) {
-    //     return name;
+    function registerPatient(string memory _name) public payable {
+        require(!persons[msg.sender].registered);
+
+        persons[msg.sender] = Person(_name, true, false, true);
+    }
+
+    function getName() public view returns (string memory) {
+        return persons[msg.sender].name;
+    }
+
+    function isVerifiedDoctor() public view returns (bool) {
+        return persons[msg.sender].verifiedDoctor;
+    }
+
+    function isVerifiedPatient() public view returns (bool) {
+        return persons[msg.sender].verifiedPatient;
+    }
+
+    // function requestDocuments(address patientAddress, uint256 documentNumber)
+    //     public
+    //     payable
+    // {
+    //     require(persons[msg.sender].verifiedDoctor);
+    //     require(persons[patientAddress].verifiedPatient); // TODO: document must exist
+
+    //     Request memory request;
+    //     request.requester = msg.sender;
+    //     request.documentNumber = documentNumber;
+
+    //     persons[patientAddress].requests = request;
     // }
 
-    // function setName(string memory _name) public {
-    //     name = _name;
-    // }
-
-    // function getPatientAddress() public view returns (address) {
-    //     return patientAddress;
-    // }
+    // TODO: patient documents
 }
