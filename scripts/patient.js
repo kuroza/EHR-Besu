@@ -1,8 +1,12 @@
 const Web3 = require('web3');
 const EHRSC = require('../build/contracts/EHRSC.json');
+const HDWalletProvider = require("@truffle/hdwallet-provider");
+const wallet = require('../wallet.json');
 
 const init = async () => {
-    const web3 = new Web3('http://127.0.0.1:9545');
+    const provider = new HDWalletProvider(wallet.keys[0].privateKey, 'http://127.0.0.1:9545');
+
+    const web3 = new Web3(provider);
 
     const id = await web3.eth.net.getId(); // get current network id
     const deployedNetwork = EHRSC.networks[id];
@@ -11,14 +15,16 @@ const init = async () => {
         deployedNetwork.address
     );
 
-    const addresses = await web3.eth.getAccounts();
-    /* will be mined */
-    const receipt = await contract.methods.registerPatient("Zakwan").send({
-        from: addresses[0], // how to use the index 1's address?
-        gas: 3000000
-    });
-    // let name = await contract.methods.getName().call();
-    console.log(receipt);
+    let balance = await web3.eth.getBalance(wallet.keys[0].address);
+    console.log(balance);
+
+    await contract.methods.registerPatient("Zakwan")
+        .send({
+            from: wallet.keys[0].address,
+        });
+
+    let name = await contract.methods.getName(wallet.keys[0].address).call();
+    console.log(name);
 }
 
 init();

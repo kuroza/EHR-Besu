@@ -4,3 +4,4 @@ node_modules/
 config/
 .gitignore
 .env
+wallet.json
