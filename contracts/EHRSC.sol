@@ -9,18 +9,29 @@ contract EHRSC {
         bool registered;
         bool verifiedDoctor;
         bool verifiedPatient;
+        // mapping(uint256 => HealthRecord) healthRecords;
+
         uint256 requestCount;
-        mapping(uint256 => Request) requests;
+        Request[] requests;
     }
 
+    // struct HealthRecord {
+    // }
+
     struct Request {
+        uint256 requestNo;
         address requester;
         uint256 bundleNumber;
     }
 
     mapping(address => Person) public persons;
 
-    function registerDoctor(string memory _name) public payable {
+    modifier onlyDoctor() {
+        require(persons[msg.sender].verifiedDoctor);
+        _;
+    }
+
+    function registerDoctor(string memory _name) public {
         require(!persons[msg.sender].registered, "Person already registered");
         Person storage doctor = persons[msg.sender];
         doctor.personAddress = msg.sender;
@@ -30,14 +41,15 @@ contract EHRSC {
         doctor.verifiedPatient = false;
     }
 
-    function registerPatient(string memory _name) public payable {
-        require(!persons[msg.sender].registered);
+    function registerPatient(string memory _name) public {
+        require(!persons[msg.sender].registered, "Person already registered");
         Person storage patient = persons[msg.sender];
         patient.personAddress = msg.sender;
         patient.name = _name;
         patient.registered = true;
         patient.verifiedDoctor = false;
         patient.verifiedPatient = true;
+        patient.requestCount = 0;
     }
 
     function getName() public view returns (string memory) {
@@ -54,27 +66,31 @@ contract EHRSC {
 
     function requestDocuments(address patientAddress, uint256 bundleNumber)
         public
-        payable
+        onlyDoctor
     {
-        require(persons[msg.sender].verifiedDoctor);
         // require(persons[patientAddress].verifiedPatient); // TODO: document must exist
 
-        Request memory request;
-        request.requester = msg.sender;
-        request.bundleNumber = bundleNumber;
-
         uint256 count = persons[patientAddress].requestCount;
-        count++;
-        persons[patientAddress].requests[count] = request;
-        persons[patientAddress].requestCount = count;
+        Request memory newRequest = Request(count, msg.sender, bundleNumber);
+        persons[patientAddress].requests.push(newRequest);
+        persons[patientAddress].requestCount = ++count;
     }
 
-    function checkPatientDocumentRequests() public view returns (uint256) {
+    function checkPatientRequestCount() public view returns (uint256) {
         require(persons[msg.sender].verifiedPatient, "Must be a patient");
-        return persons[msg.sender].requestCount; // test checking how many requests are there
-        // TODO: check the contains of requests object array
+        return persons[msg.sender].requestCount;
     }
 
+    function checkPatientRequestAtIndex(uint256 index)
+        public
+        view
+        returns (Request memory)
+    {
+        require(persons[msg.sender].verifiedPatient, "Must be a patient");
+        return persons[msg.sender].requests[index];
+    }
+
+    // TODO: function: Patient register for appointment to hospital
     // TODO: function: RA verifies patient and doctor
     // TODO: function: Patient allow access to doctor or send re-encryption keys to NuCypher network
 }

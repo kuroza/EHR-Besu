@@ -2,3 +2,5 @@
 *.bin
 node_modules/
 config/
+.gitignore
+.env
