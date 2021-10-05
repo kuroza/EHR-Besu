@@ -5,3 +5,4 @@ config/
 .gitignore
 .env
 wallet.json
+build/contracts/

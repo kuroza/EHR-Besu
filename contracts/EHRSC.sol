@@ -40,10 +40,7 @@ contract EHRSC {
     // event DoctorVerified(Person doctor);
     // event PatientVerified(Person patient);
     event RequestedDocuments(Request newRequest, address patientAddress);
-    event RequestedAppointment(
-        Appointment newAppointment,
-        address patientAddress
-    );
+    event RequestedAppointment(Appointment newAppointment);
 
     modifier onlyDoctor() {
         require(persons[msg.sender].verifiedDoctor);
@@ -87,31 +84,16 @@ contract EHRSC {
         emit PatientRegistered(patient);
     }
 
-    function getName(address _personAddress)
-        public
-        view
-        returns (string memory)
-    {
-        require(msg.sender == _personAddress);
-        return persons[_personAddress].name; // initially persons[msg.sender].name;
+    function getName() public view returns (string memory) {
+        return persons[msg.sender].name;
     }
 
-    function isVerifiedDoctor(address _personAddress)
-        public
-        view
-        returns (bool)
-    {
-        require(msg.sender == _personAddress);
-        return persons[_personAddress].verifiedDoctor;
+    function isVerifiedDoctor() public view returns (bool) {
+        return persons[msg.sender].verifiedDoctor;
     }
 
-    function isVerifiedPatient(address _personAddress)
-        public
-        view
-        returns (bool)
-    {
-        require(msg.sender == _personAddress);
-        return persons[_personAddress].verifiedPatient;
+    function isVerifiedPatient() public view returns (bool) {
+        return persons[msg.sender].verifiedPatient;
     }
 
     function requestDocuments(address _patientAddress, uint256 _bundleNumber)
@@ -126,34 +108,28 @@ contract EHRSC {
         emit RequestedDocuments(newRequest, _patientAddress);
     }
 
-    function checkPatientRequestCount(address _patientAddress)
+    function checkPatientRequestCount()
         public
         view
         onlyPatient
         returns (uint256)
     {
-        require(msg.sender == _patientAddress);
-        return persons[_patientAddress].requestCount;
+        return persons[msg.sender].requestCount;
     }
 
-    function checkPatientRequestAtIndex(address _patientAddress, uint256 index)
+    function checkPatientRequestAtIndex(uint256 index)
         public
         view
         onlyPatient
         returns (Request memory)
     {
-        require(msg.sender == _patientAddress);
-        return persons[_patientAddress].requests[index];
+        return persons[msg.sender].requests[index];
     }
 
-    function requestAppointment(address _patientAddress, string memory _reason)
-        public
-        onlyPatient
-    {
-        require(msg.sender == _patientAddress);
+    function requestAppointment(string memory _reason) public onlyPatient {
         Appointment memory newAppointment = Appointment(_reason, "", 0, 0);
-        persons[_patientAddress].appointments.push(newAppointment);
-        emit RequestedAppointment(newAppointment, _patientAddress);
+        persons[msg.sender].appointments.push(newAppointment);
+        emit RequestedAppointment(newAppointment);
     }
 
     fallback() external {
