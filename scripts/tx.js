@@ -20,7 +20,7 @@ async function init() {
 }
 
 async function initPatient(contract) {
-    await contract.methods.registerPatient("Zakwan").send({
+    await contract.methods.registerPatient("Patient Bob").send({
         from: wallet.addresses[0],
     });
     
@@ -38,7 +38,7 @@ async function checkPatientRequestCount(contract) {
 }
 
 async function initDoctor(contract) {
-    await contract.methods.registerDoctor("Shameer").send({
+    await contract.methods.registerDoctor("Dr. Alice").send({
         from: wallet.addresses[1],
     });
     

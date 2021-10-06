@@ -26,7 +26,7 @@ contract EHRSC {
     struct Appointment {
         string reason;
         string venue;
-        uint256 date; // date object?
+        uint256 date;
         uint256 time; // time object?
     }
 
