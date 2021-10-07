@@ -10,78 +10,133 @@ async function init() {
     });
     const web3 = new Web3(provider);
     const id = await web3.eth.net.getId(); // get current network id
-    const deployedNetwork = EHRSC.networks[id];
+    const deployedContract = EHRSC.networks[id];
     const contract = new web3.eth.Contract(
         EHRSC.abi,
-        deployedNetwork.address
+        deployedContract.address
     );
-
     return contract;
 }
 
-async function initPatient(contract) {
-    await contract.methods.registerPatient("Patient Bob").send({
-        from: wallet.addresses[0],
+async function initRegulatoryAgencyAdmin(contract, _from, _name) {
+    await contract.methods.registerRegulatoryAgencyAdmin(_name).send({
+        from: _from,
+    });
+
+    const adminName = await contract.methods.getName().call({
+        from: _from,
+    });
+    console.log('Regulatory agency admin registered: ' + adminName + '\n');
+}
+
+async function initPatient(contract, _from, _name) {
+    await contract.methods.registerPatient(_name).send({
+        from: _from,
     });
     
-    let name = await contract.methods.getName().call({
-        from: wallet.addresses[0],
+    const patientName = await contract.methods.getName().call({
+        from: _from,
     });
-    console.log("Patient registered:", name);
+    console.log('Patient registered: ' + patientName + '\n');
 }
 
-async function checkPatientRequestCount(contract) {
-    let count = await contract.methods.checkPatientRequestCount().call({
-        from: wallet.addresses[0],
+async function checkPatientRequestCount(contract, _from) {
+    const count = await contract.methods.checkPatientRequestCount().call({
+        from: _from,
     });
-    console.log("Patient request count:", count);    
+    console.log('Patient request count: ' + count + '\n');    
 }
 
-async function initDoctor(contract) {
-    await contract.methods.registerDoctor("Dr. Alice").send({
-        from: wallet.addresses[1],
+async function initDoctor(contract, _from, _name) {
+    await contract.methods.registerDoctor(_name).send({
+        from: _from,
     });
     
-    let name = await contract.methods.getName().call({
-        from: wallet.addresses[1],
+    const doctorName = await contract.methods.getName().call({
+        from: _from,
     });
-    console.log("Doctor registered:", name);
+    console.log('Doctor registered: ' + doctorName + '\n');
 }
 
-async function requestDocuments(contract) {
-    await contract.methods.requestDocuments(wallet.addresses[0], 23).send({
-        from: wallet.addresses[1],
-    });    
+async function requestDocuments(contract, _from, _to, _bundleNo) {
+    await contract.methods.requestDocuments(_to, _bundleNo).send({
+        from: _from,
+    });
+    console.log('Request document sent\n');
 }
 
-async function checkPatientRequest(contract) {
-    const result = await contract.methods.checkPatientRequestAtIndex(0).call({
-        from: wallet.addresses[0]
+async function checkPatientRequest(contract, _from, _index) {
+    const result = await contract.methods.checkPatientRequestAtIndex(_index).call({
+        from: _from,
     });
-
-    console.log("Patient request:", result);
+    console.log(result);
 }
 
-async function requestAppointment(contract) {
-    await contract.methods.requestAppointment("Arm pain").send({
-        from: wallet.addresses[0]
+async function requestAppointment(contract, _from, _reason, _venue, _date, _time) {
+    await contract.methods.requestAppointment(_reason, _venue, _date, _time).send({
+        from: _from,
     });
+    console.log('Appointment request sent\n');
+}
 
-    console.log("Appointment request sent");
+async function verifyByOwner(contract, _from, _personAddress) {
+    await contract.methods.verifyByOwner(_personAddress).send({
+        from: _from
+    });
+    console.log('... regulatory agency admin verified by contract owner\n');
+}
+
+async function regulatoryAgencyAdminVerify(contract, _from, _personAddress) {
+    await contract.methods.regulatoryAgencyAdminVerify(_personAddress).send({
+        from: _from
+    });
+    console.log('Verification success\n');
 }
 
 async function main() {
+    // const provider = new HDWalletProvider({
+    //     privateKeys: wallet.privateKeys,
+    //     providerOrUrl: 'http://127.0.0.1:9545'
+    // });
+    // const web3 = new Web3(provider);
+    // const id = await web3.eth.net.getId(); // get current network id
+    // const deployedNetwork = EHRSC.networks[id];
+    // const contract = new web3.eth.Contract(
+    //     EHRSC.abi,
+    //     deployedNetwork.address
+    // );
+
+    // const accounts = await web3.eth.getAccounts();
+    // console.log(accounts);
+
+    // let owner = await contract.methods.getOwner().call();
+    // console.log(owner);
+
     const contract = await init();
-    console.log("Registering patient ...");
-    await initPatient(contract);
-    console.log("Registering doctor ...");
-    await initDoctor(contract);
-    console.log("Requesting documents ...");
-    await requestDocuments(contract);
-    await checkPatientRequestCount(contract);
-    await checkPatientRequest(contract);
-    console.log("Requesting appointment ...");
-    await requestAppointment(contract);
+    console.log('Registering regulatory agency admin ...');
+    await initRegulatoryAgencyAdmin(contract, wallet.addresses[0], 'RA Admin Carol');
+    await verifyByOwner(contract, wallet.addresses[0], wallet.addresses[0]);
+
+    console.log('Registering patient ...');
+    await initPatient(contract, wallet.addresses[2], 'Patient Bob');
+
+    console.log('Registering doctor ...');
+    await initDoctor(contract, wallet.addresses[1], 'Dr. Alice');
+
+    console.log('Regulatory agency admin is verifying doctor ...');
+    await regulatoryAgencyAdminVerify(contract, wallet.addresses[0], wallet.addresses[1]);
+
+    console.log('Regulatory agency admin is verifying patient ...');
+    await regulatoryAgencyAdminVerify(contract, wallet.addresses[0], wallet.addresses[2]);
+    
+    console.log('Patient is requesting appointment ...');
+    await requestAppointment(contract, wallet.addresses[2], 'Arm pain', 'RIPAS', 0, 0); // date and time
+
+    console.log('Doctor is requesting documents ...');
+    await requestDocuments(contract, wallet.addresses[1], wallet.addresses[2], 23);
+
+    await checkPatientRequestCount(contract, wallet.addresses[2]);
+    // await checkPatientRequest(contract, wallet.addresses[2], 0);
 }
 
 main();

@@ -12,9 +12,9 @@ contract("EHRSC", () => {
     })
     
     it("Should get doctor's name", async () => {
-        await instance.registerDoctor("Dr. Zakwan");
+        await instance.registerDoctor("Dr. Alice");
         result = await instance.getName();
-        assert.equal(result, "Dr. Zakwan");
+        assert.equal(result, "Dr. Alice");
         // console.log(instance.address);
     })
 
@@ -53,9 +53,9 @@ contract ("EHRSC", () => {
     })
     
     it("Should get patient's name", async () => {
-        await patient.registerPatient("Tina");
+        await patient.registerPatient("Patient Bob");
         result = await patient.getName();
-        assert.equal(result, "Tina");
+        assert.equal(result, "Patient Bob");
         // console.log(patient.address);
     })
 

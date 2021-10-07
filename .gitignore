@@ -5,4 +5,7 @@ config/
 .gitignore
 .env
 wallet.json
-build/contracts/
+build/
+coverage/
+coverage.json
+wallet.txt
