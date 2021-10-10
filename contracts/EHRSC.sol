@@ -3,7 +3,6 @@ pragma solidity >=0.7.0 <0.9.0;
 
 contract EHRSC {
     address public owner;
-    string public functionCalled;
 
     mapping(address => Person) public persons;
 
@@ -40,7 +39,6 @@ contract EHRSC {
         uint256 requestCount;
         Request[] requests;
         Appointment[] appointments;
-        // mapping(uint256 => HealthRecord) healthRecords;
     }
 
     struct Request {
@@ -49,7 +47,10 @@ contract EHRSC {
         uint256 bundleNumber;
     }
 
-    // struct RegulatoryAgencyAdmin {}
+    // struct InsuranceCompany {}
+    // struct Laboratory {}
+    // struct Pharmacy {}
+    // struct RegulatoryAgency {}
     // struct HealthRecord {}
     // struct Hospital {}
 
@@ -94,7 +95,6 @@ contract EHRSC {
         doctor.verifiedDoctor = false;
         doctor.verifiedPatient = false;
         doctor.verifiedRegulatoryAgencyAdmin = false;
-        // gender, email, nationality, etc.
         emit DoctorRegistered(doctor);
     }
 
@@ -108,11 +108,6 @@ contract EHRSC {
         patient.verifiedPatient = false;
         patient.verifiedRegulatoryAgencyAdmin = false;
         patient.requestCount = 0;
-        // patient info
-        // IC for locals / passport for foreigners
-        // contact and home address
-        // related contacts
-        // employment details
         emit PatientRegistered(patient);
     }
 
@@ -135,6 +130,10 @@ contract EHRSC {
         return persons[msg.sender].name;
     }
 
+    function isVerifiedRAAdmin() public view returns (bool) {
+        return persons[msg.sender].verifiedRegulatoryAgencyAdmin;
+    }
+
     function isVerifiedDoctor() public view returns (bool) {
         return persons[msg.sender].verifiedDoctor;
     }
@@ -147,8 +146,11 @@ contract EHRSC {
         public
         onlyDoctor
     {
-        require(persons[_patientAddress].verifiedPatient); // TODO: check document must exist
-        uint256 count = persons[_patientAddress].requestCount; // tracking request count
+        require(
+            persons[_patientAddress].verifiedPatient,
+            "Patient must be verified"
+        ); // TODO: check document must exist
+        uint256 count = persons[_patientAddress].requestCount;
         Request memory newRequest = Request(count, msg.sender, _bundleNumber);
         persons[_patientAddress].requests.push(newRequest);
         persons[_patientAddress].requestCount = ++count;
@@ -221,9 +223,6 @@ contract EHRSC {
         }
     }
 
-    fallback() external {
-        functionCalled = "fallback";
-    }
-
+    // TODO: function Hospital accepts appointment request
     // TODO: function: Patient allow access to doctor or send re-encryption keys to NuCypher network
 }
