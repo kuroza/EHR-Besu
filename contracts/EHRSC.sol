@@ -9,15 +9,18 @@ contract EHRSC {
     enum EntityClaim {
         REGULATORY_AGENCY_ADMIN,
         DOCTOR,
-        PATIENT
+        PATIENT,
+        INSURANCE_COMPANY_ADMIN
     }
 
     event DoctorRegistered(Person doctor);
     event PatientRegistered(Person patient);
     event RegulatoryAgencyAdminRegistered(Person regulatoryAgencyAdmin);
+    event InsuranceCompanyAdminRegistered(Person insuranceCompanyAdmin);
     event DoctorVerified(Person doctor);
     event PatientVerified(Person patient);
     event RegulatorAgencyAdminVerified(Person regulatoryAgencyAdmin);
+    event InsuranceCompanyAdminVerified(Person insuranceCompanyAdmin);
     event RequestedDocuments(Request newRequest, address patientAddress);
     event RequestedAppointment(Appointment newAppointment);
 
@@ -36,6 +39,7 @@ contract EHRSC {
         bool verifiedDoctor;
         bool verifiedPatient;
         bool verifiedRegulatoryAgencyAdmin;
+        bool verifiedInsuranceCompanyAdmin;
         uint256 requestCount;
         Request[] requests;
         Appointment[] appointments;
@@ -77,6 +81,14 @@ contract EHRSC {
         _;
     }
 
+    modifier onlyInsuranceCompanyAdmin() {
+        require(
+            persons[msg.sender].verifiedInsuranceCompanyAdmin,
+            "Must be a insurance company admin"
+        );
+        _;
+    }
+
     modifier onlyRegistered() {
         require(!persons[msg.sender].registered, "Person already registered");
         _;
@@ -95,6 +107,7 @@ contract EHRSC {
         doctor.verifiedDoctor = false;
         doctor.verifiedPatient = false;
         doctor.verifiedRegulatoryAgencyAdmin = false;
+        doctor.verifiedInsuranceCompanyAdmin = false;
         emit DoctorRegistered(doctor);
     }
 
@@ -107,6 +120,7 @@ contract EHRSC {
         patient.verifiedDoctor = false;
         patient.verifiedPatient = false;
         patient.verifiedRegulatoryAgencyAdmin = false;
+        patient.verifiedInsuranceCompanyAdmin = false;
         patient.requestCount = 0;
         emit PatientRegistered(patient);
     }
@@ -123,6 +137,7 @@ contract EHRSC {
         regulatoryAgencyAdmin.verifiedDoctor = false;
         regulatoryAgencyAdmin.verifiedPatient = false;
         regulatoryAgencyAdmin.verifiedRegulatoryAgencyAdmin = false;
+        regulatoryAgencyAdmin.verifiedInsuranceCompanyAdmin = false;
         emit RegulatoryAgencyAdminRegistered(regulatoryAgencyAdmin);
     }
 
@@ -132,6 +147,10 @@ contract EHRSC {
 
     function isVerifiedRAAdmin() public view returns (bool) {
         return persons[msg.sender].verifiedRegulatoryAgencyAdmin;
+    }
+
+    function isVerifiedInsuranceCompanyAdmin() public view returns (bool) {
+        return persons[msg.sender].verifiedInsuranceCompanyAdmin;
     }
 
     function isVerifiedDoctor() public view returns (bool) {
@@ -191,6 +210,7 @@ contract EHRSC {
         emit RequestedAppointment(newAppointment);
     }
 
+    // deployer of the smart contract can verify RA admins
     function verifyByOwner(address _personAddress) public onlyOwner {
         if (
             persons[_personAddress].entityClaim ==
@@ -220,9 +240,16 @@ contract EHRSC {
         } else if (persons[_personAddress].entityClaim == EntityClaim.PATIENT) {
             persons[_personAddress].verifiedPatient = true;
             emit PatientVerified(persons[_personAddress]);
+        } else if (
+            persons[_personAddress].entityClaim ==
+            EntityClaim.INSURANCE_COMPANY_ADMIN
+        ) {
+            persons[_personAddress].verifiedInsuranceCompanyAdmin = true;
+            emit InsuranceCompanyAdminVerified(persons[_personAddress]);
         }
     }
 
-    // TODO: function Hospital accepts appointment request
+    // TODO: function: Insurance company
+    // TODO: function: Hospital accepts appointment request
     // TODO: function: Patient allow access to doctor or send re-encryption keys to NuCypher network
 }
