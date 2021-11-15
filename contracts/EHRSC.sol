@@ -29,6 +29,7 @@ contract EHRSC {
         string venue;
         uint256 date;
         uint256 time;
+        // status
     }
 
     struct Person {
@@ -52,11 +53,11 @@ contract EHRSC {
     }
 
     // struct InsuranceCompany {}
+    // struct Hospital {}
     // struct Laboratory {}
     // struct Pharmacy {}
     // struct RegulatoryAgency {}
     // struct HealthRecord {}
-    // struct Hospital {}
 
     modifier onlyDoctor() {
         require(persons[msg.sender].verifiedDoctor, "Must be a doctor");
@@ -207,6 +208,7 @@ contract EHRSC {
             _time
         );
         persons[msg.sender].appointments.push(newAppointment);
+        // push to appointment request to hospital for confirmation
         emit RequestedAppointment(newAppointment);
     }
 
@@ -249,7 +251,7 @@ contract EHRSC {
         }
     }
 
-    // TODO: function: Insurance company
-    // TODO: function: Hospital accepts appointment request
-    // TODO: function: Patient allow access to doctor or send re-encryption keys to NuCypher network
+    // TODO: Patient submits records to IPFS
+    // TODO: Patient allow access to doctor or send re-encryption keys to NuCypher network
+    // TODO: Hospital accepts appointment request
 }
