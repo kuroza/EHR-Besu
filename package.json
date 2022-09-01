@@ -1,13 +1,15 @@
 {
-  "name": "EHR-Besu",
+  "name": "ehr-besu",
   "version": "1.0.0",
   "description": "",
   "main": "truffle-config.js",
   "directories": {
     "test": "test"
   },
+  "type": "module",
   "scripts": {
-    "besu": "besu --network=dev --miner-enabled --miner-coinbase=0xfe3b557e8fb62b89f4916b721be55ceb828dbd73 --rpc-http-cors-origins='all' --host-allowlist='*' --rpc-ws-enabled --rpc-http-enabled --data-path=/tmp/tmpDatdir"
+    "besu": "besu --network=dev --miner-enabled --miner-coinbase=0xfe3b557e8fb62b89f4916b721be55ceb828dbd73 --rpc-http-cors-origins='all' --host-allowlist='*' --rpc-ws-enabled --rpc-http-enabled --data-path=/tmp/tmpDatdir",
+    "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],
   "author": "",
@@ -15,6 +17,8 @@
   "dependencies": {
     "@truffle/hdwallet-provider": "^1.5.0",
     "solidity-coverage": "^0.7.17",
-    "web3": "^1.6.0"
+    "web3": "^1.6.0",
+    "minimist": "^1.2.5",
+    "web3.storage": "^3.1.0"
   }
 }
