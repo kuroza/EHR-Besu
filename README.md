@@ -21,13 +21,23 @@ truffle develop
 migrate --reset
 ```
 
-Run the tx.js script:
+Then run the tx.js script:
 ```
 node scripts/tx.js
 ```
 
 ## To run the smart contract on a Hyperledger Besu network
+Follow the steps to run the Hyperledger Besu network:
+```
+https://besu.hyperledger.org/en/stable/private-networks/tutorials/ibft/#3-generate-node-keys-and-a-genesis-file
+```
+
 Deploying a smart contract to a private network:
 ```
 truffle migrate --reset --network besu
+```
+
+Then run the tx.js script:
+```
+node scripts/tx.js
 ```
