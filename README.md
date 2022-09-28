@@ -52,3 +52,9 @@ Run the tx.js script:
 ```
 node scripts/tx.js
 ```
+
+To retrieve files from IPFS:
+
+```
+node --experimental-json-modules web3-storage/retrieve.js
+```

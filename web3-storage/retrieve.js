@@ -1,8 +1,8 @@
 import { Web3Storage } from "web3.storage";
-const w3s = require("../web3storage.json");
+import w3storage from "../web3storage.json";
 
 function getAccessToken() {
-	return w3s.token;
+	return w3storage.token;
 }
 
 function makeStorageClient() {
@@ -22,3 +22,9 @@ async function retrieveFiles(cid) {
 		console.log(`${file.cid} -- ${file.path} -- ${file.size}`);
 	}
 }
+
+async function main() {
+	retrieveFiles(w3storage.cid);
+}
+
+main();

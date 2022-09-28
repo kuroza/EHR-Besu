@@ -1,7 +1,7 @@
-const Web3 = require("web3");
-const EHRSC = require("../build/contracts/EHRSC.json");
-const HDWalletProvider = require("@truffle/hdwallet-provider");
-const wallet = require("../wallet.json");
+import Web3 from "web3";
+import EHRSC from "../build/contracts/EHRSC.json";
+import HDWalletProvider from "@truffle/hdwallet-provider";
+import wallet from "../wallet.json";
 
 async function init() {
 	const provider = new HDWalletProvider({
