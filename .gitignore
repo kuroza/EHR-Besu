@@ -1,7 +1,7 @@
 *.log
 *.bin
 node_modules/
-config/
+data/
 .gitignore
 .env
 wallet.json
