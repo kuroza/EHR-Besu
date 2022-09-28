@@ -1,11 +1,8 @@
 *.log
 *.bin
+.env
 node_modules/
 data/
-.gitignore
-.env
-wallet.json
 build/
 coverage/
 coverage.json
-wallet.txt
