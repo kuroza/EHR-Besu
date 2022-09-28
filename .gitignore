@@ -6,3 +6,4 @@ data/
 build/
 coverage/
 coverage.json
+web3storage.json
