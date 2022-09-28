@@ -1,31 +1,54 @@
-# EHR-Besu
+# Blockchain-enabled Secure and Efficient Electronic Health Record Management System
 
----
+## Pre-requisites:
 
-## Blockchain-enabled Secure and Efficient Electronic Health Record Management System Using Hyperledger Besu, NuCypher, and IPFS
+- Linux environment or WSL2
+- Install [Java JDK](https://www.oracle.com/java/technologies/javase-downloads.html)
+- Download the Besu [packaged binaries](https://github.com/hyperledger/besu/releases)
+- Install [Node.js](https://nodejs.org/en/download/)
+- Install Truffle:
 
-### Pre-requisites
+```
+npm install -g truffle
+```
 
-Linux environment or WSL2
-Install Java JDK[https://www.oracle.com/java/technologies/javase-downloads.html]
-Download the Besu packaged binaries[https://github.com/hyperledger/besu/releases]
-Install node.js
-Install Truffle: `npm install truffle -g`
-Install Ganache: `npm install -g ganache-cli`
+- Install Ganache:
 
-### To run the smart contract on a Ganache network using Truffle
+```
+npm install -g ganache-cli
+```
 
-Open a console and write:
+## To run the smart contract on a Ganache network using Truffle
 
-```bash
+Execute these commands to run the network and deploy the smart contract:
+
+```
 truffle develop
 migrate --reset
 ```
 
-Open a new console and write:
-`node scripts/tx.js`
+Run the tx.js script:
 
-### To run the smart contract on a Besu network
+```
+node scripts/tx.js
+```
+
+## To run the smart contract on a Hyperledger Besu network
+
+Follow the steps to run the Hyperledger Besu network:
+
+```
+https://besu.hyperledger.org/en/stable/private-networks/tutorials/ibft/#3-generate-node-keys-and-a-genesis-file
+```
 
 Deploying a smart contract to a private network:
-`truffle migrate --reset --network besu`
+
+```
+truffle migrate --reset --network besu
+```
+
+Run the tx.js script:
+
+```
+node scripts/tx.js
+```
