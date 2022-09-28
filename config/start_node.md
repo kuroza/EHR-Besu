@@ -9,24 +9,24 @@ Node-2
 `cd config/IBFT-Network/Node-2`
 
 ```
-besu --data-path=data --genesis-file=../genesis.json --bootnodes=enode://c07b9810f88456ee17321e43e60304a3c4adef92aa5aef8914c56ee2bfcfe2c9b824fa8cd3c74b47909cce42d58b136282ab03bc39dc490a715f19b33192a990@127.0.0.1:30303 --p2p-port=30304 --rpc-http-enabled --rpc-http-api=ETH,NET,IBFT --host-allowlist="*" --rpc-http-cors-origins="all" --rpc-http-port=8546
+besu --data-path=data --genesis-file=../genesis.json --bootnodes=enode://23a1b6295305fc6f2adbe28bb8ed7258658f3602c0d2a0f79b5d9be846ae22b4c827eff8e25c5d4db3a4c9f82301504b8c586629fbb8f281db5825b1e203f46a@127.0.0.1:30303 --p2p-port=30304 --rpc-http-enabled --rpc-http-api=ETH,NET,IBFT --host-allowlist="*" --rpc-http-cors-origins="all" --rpc-http-port=8546
 ```
 
 Node-3
 `cd config/IBFT-Network/Node-3`
 
 ```
-besu --data-path=data --genesis-file=../genesis.json --bootnodes=enode://c07b9810f88456ee17321e43e60304a3c4adef92aa5aef8914c56ee2bfcfe2c9b824fa8cd3c74b47909cce42d58b136282ab03bc39dc490a715f19b33192a990@127.0.0.1:30303 --p2p-port=30305 --rpc-http-enabled --rpc-http-api=ETH,NET,IBFT --host-allowlist="*" --rpc-http-cors-origins="all" --rpc-http-port=8547
+besu --data-path=data --genesis-file=../genesis.json --bootnodes=enode://23a1b6295305fc6f2adbe28bb8ed7258658f3602c0d2a0f79b5d9be846ae22b4c827eff8e25c5d4db3a4c9f82301504b8c586629fbb8f281db5825b1e203f46a@127.0.0.1:30303 --p2p-port=30305 --rpc-http-enabled --rpc-http-api=ETH,NET,IBFT --host-allowlist="*" --rpc-http-cors-origins="all" --rpc-http-port=8547
 ```
 
 Node4
 `cd config/IBFT-Network/Node-4`
 
 ```
-besu --data-path=data --genesis-file=../genesis.json --bootnodes=enode://c07b9810f88456ee17321e43e60304a3c4adef92aa5aef8914c56ee2bfcfe2c9b824fa8cd3c74b47909cce42d58b136282ab03bc39dc490a715f19b33192a990@127.0.0.1:30303 --p2p-port=30306 --rpc-http-enabled --rpc-http-api=ETH,NET,IBFT --host-allowlist="*" --rpc-http-cors-origins="all" --rpc-http-port=8548
+besu --data-path=data --genesis-file=../genesis.json --bootnodes=enode://23a1b6295305fc6f2adbe28bb8ed7258658f3602c0d2a0f79b5d9be846ae22b4c827eff8e25c5d4db3a4c9f82301504b8c586629fbb8f281db5825b1e203f46a@127.0.0.1:30303 --p2p-port=30306 --rpc-http-enabled --rpc-http-api=ETH,NET,IBFT --host-allowlist="*" --rpc-http-cors-origins="all" --rpc-http-port=8548
 ```
 
 ---
 
 Node-1 address
-enode://c07b9810f88456ee17321e43e60304a3c4adef92aa5aef8914c56ee2bfcfe2c9b824fa8cd3c74b47909cce42d58b136282ab03bc39dc490a715f19b33192a990@127.0.0.1:30303
+enode://23a1b6295305fc6f2adbe28bb8ed7258658f3602c0d2a0f79b5d9be846ae22b4c827eff8e25c5d4db3a4c9f82301504b8c586629fbb8f281db5825b1e203f46a@127.0.0.1:30303
