@@ -551,16 +551,90 @@ video {
   --tw-backdrop-sepia:  ;
 }
 
-.text-3xl {
-  font-size: 1.875rem;
-  line-height: 2.25rem;
+.col-start-1 {
+  grid-column-start: 1;
 }
 
-.font-bold {
-  font-weight: 700;
+.col-start-2 {
+  grid-column-start: 2;
 }
 
-.underline {
-  -webkit-text-decoration-line: underline;
-          text-decoration-line: underline;
+.col-start-4 {
+  grid-column-start: 4;
+}
+
+.col-end-6 {
+  grid-column-end: 6;
+}
+
+.col-end-2 {
+  grid-column-end: 2;
+}
+
+.col-end-4 {
+  grid-column-end: 4;
+}
+
+.row-start-1 {
+  grid-row-start: 1;
+}
+
+.row-start-2 {
+  grid-row-start: 2;
+}
+
+.row-end-2 {
+  grid-row-end: 2;
+}
+
+.row-end-3 {
+  grid-row-end: 3;
+}
+
+.mx-auto {
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.grid {
+  display: grid;
+}
+
+.h-16 {
+  height: 4rem;
+}
+
+.min-h-screen {
+  min-height: 100vh;
+}
+
+.min-h-full {
+  min-height: 100%;
+}
+
+.max-w-7xl {
+  max-width: 80rem;
+}
+
+.grid-cols-5 {
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+}
+
+.gap-6 {
+  gap: 1.5rem;
+}
+
+.bg-slate-400 {
+  --tw-bg-opacity: 1;
+  background-color: rgb(148 163 184 / var(--tw-bg-opacity));
+}
+
+.p-8 {
+  padding: 2rem;
+}
+
+@media (min-width: 768px) {
+  .md\:gap-10 {
+    gap: 2.5rem;
+  }
 }

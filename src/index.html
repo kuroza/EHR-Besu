@@ -8,8 +8,13 @@
   <title>Document</title>
 </head>
 <body>
-  <h1 class="text-3xl font-bold underline">
-    Hello world!
-  </h1>
+  <div id="home" class="min-h-screen">
+    <div class="max-w-7xl mx-auto grid grid-row-2 grid-cols-5 gap-6 md:gap-10 p-8">
+      <header class="h-16 bg-slate-400 row-start-1 row-end-2 col-start-1 col-end-6">Header</header>
+      <aside class="min-h-screen bg-slate-400 row-start-2 row-end-3 col-start-1 col-end-2">Sidebar</aside>
+      <div id="patient-list" class="min-h-screen bg-slate-400 row-start-2 row-end-3 col-start-2 col-end-4">Patient list</div>
+      <main class="min-h-screen bg-slate-400 row-start-2 row-end-3 col-start-4 col-end-6">Patient's record</main>
+    </div>
+  </div>
 </body>
 </html>
