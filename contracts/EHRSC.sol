@@ -21,7 +21,7 @@ contract EHRSC {
     event PatientVerified(Person patient);
     event RegulatorAgencyAdminVerified(Person regulatoryAgencyAdmin);
     event InsuranceCompanyAdminVerified(Person insuranceCompanyAdmin);
-    event RequestedDocuments(Request newRequest, address patientAddress);
+    event RequestedBundle(Request newRequest, address patientAddress);
     event RequestedAppointment(Appointment newAppointment);
 
     struct Appointment {
@@ -33,6 +33,7 @@ contract EHRSC {
 
     struct Person {
         address personAddress;
+        // add public key
         string name;
         EntityClaim entityClaim;
         bool registered;
@@ -43,12 +44,18 @@ contract EHRSC {
         uint256 requestCount;
         Request[] requests;
         Appointment[] appointments;
+        Bundle bundle;
+    }
+
+    struct Bundle {
+        string bundleNumber;
+        address doctorAddress;
     }
 
     struct Request {
         uint256 requestNo;
         address requester;
-        uint256 bundleNumber;
+        string bundleNumber;
     }
 
     // struct InsuranceCompany {}
@@ -161,19 +168,44 @@ contract EHRSC {
         return persons[msg.sender].verifiedPatient;
     }
 
-    function requestDocuments(address _patientAddress, uint256 _bundleNumber)
+    function uploadBundle(address _patientAddress, string memory _bundleNumber)
+        public
+        onlyDoctor
+    {
+        // // require verified patient
+        // require(
+        //     persons[_patientAddress].verifiedPatient,
+        //     "Patient must be verified"
+        // );
+
+        // store which doctor uploaded the latest bundle
+        Bundle memory newBundle = Bundle(_bundleNumber, msg.sender); // rather use bundleHash and msg.sender
+
+        // assign the bundleNo to patient for reference
+        persons[_patientAddress].bundle = newBundle;
+    }
+
+    function checkPatientBundleHash(address _patientAddress)
+        public
+        view
+        returns (string memory)
+    {
+        return persons[_patientAddress].bundle.bundleNumber;
+    }
+
+    function requestBundle(address _patientAddress, string memory _bundleNumber)
         public
         onlyDoctor
     {
         require(
             persons[_patientAddress].verifiedPatient,
             "Patient must be verified"
-        ); // TODO: check document must exist
+        ); // TODO: check bundle must exist
         uint256 count = persons[_patientAddress].requestCount;
         Request memory newRequest = Request(count, msg.sender, _bundleNumber);
         persons[_patientAddress].requests.push(newRequest);
         persons[_patientAddress].requestCount = ++count;
-        emit RequestedDocuments(newRequest, _patientAddress);
+        emit RequestedBundle(newRequest, _patientAddress);
     }
 
     function checkPatientRequestCount()
