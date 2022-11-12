@@ -52,11 +52,11 @@ patient_secret_key, patient_public_key, patient_signing_key, patient_signer, pat
 
 print("\n******************************************************\n")
 print("2 Encrypting files with patient's public key...\n")
-capsule, encrypted_files = encrypt_files("./unencrypted_files/patient-data.txt", "./encrypted_files/patient-data.txt", patient_public_key)
+capsule, encrypted_files = encrypt_files("/mnt/c/Users/assid/Workspace/EHR-Besu/src/pyUmbral/unencrypted_files/patient-data.txt", "/mnt/c/Users/assid/Workspace/EHR-Besu/src/pyUmbral/encrypted_files/patient-data.txt", patient_public_key)
 
 print("\n******************************************************\n")
 print("3 Storing encrypted files on IPFS...\n")
-store_encrypted_files('../web3-storage/file-storage.js')
+store_encrypted_files('/mnt/c/Users/assid/Workspace/EHR-Besu/src/web3-storage/file-storage.js')
 
 print("\n******************************************************\n")
 print("4-A Doctor sends request to blockchain for access to patient's data...")
@@ -92,9 +92,11 @@ cfrags = [cfrag.verify(capsule, verifying_pk=patient_verifying_key, delegating_p
 
 print("\n******************************************************\n")
 print("9 Doctor opens capsule and decrypts file...\n")
-retrieve_encrypted_file = open("./encrypted_files/patient-data.txt", "rb").read()
+retrieve_encrypted_file = open("/mnt/c/Users/assid/Workspace/EHR-Besu/src/pyUmbral/encrypted_files/patient-data.txt", "rb").read()
 decrypted_file = decrypt_reencrypted(receiving_sk=doctor_secret_key, delegating_pk=patient_public_key, capsule=capsule, verified_cfrags=cfrags, ciphertext=retrieve_encrypted_file)
-write_decrypted_data = open("./decrypted_files/patient-data.txt", "wb")
+
+write_decrypted_data = open("/mnt/c/Users/assid/Workspace/EHR-Besu/src/pyUmbral/decrypted_files/patient-data.txt", "wb")
 write_decrypted_data.write(decrypted_file)
 write_decrypted_data.close()
-print(decrypted_file)
+print("Contents of decrypted file:")
+print(decrypted_file); print()

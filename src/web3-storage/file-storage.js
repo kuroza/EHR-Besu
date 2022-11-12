@@ -20,7 +20,9 @@ async function storeFiles(files) {
 }
 
 async function main() {
-	let files = await getFiles(`../pyUmbral/encrypted_files`);
+	let files = await getFiles(
+		`/mnt/c/Users/assid/Workspace/EHR-Besu/src/pyUmbral/encrypted_files`
+	);
 	await storeFiles(files);
 }
 
