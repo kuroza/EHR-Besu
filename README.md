@@ -23,14 +23,14 @@ npm install -g ganache-cli
 Execute these commands to run the network and deploy the smart contract:
 
 ```
-truffle develop
+truffle develop --config truffle-config.cjs
 migrate --reset
 ```
 
-Run the tx.js script:
+Run the txUsingWeb3.js script:
 
 ```
-node scripts/tx.js
+node src/scripts/txUsingWeb3.js
 ```
 
 ## To run the smart contract on a Hyperledger Besu network
@@ -44,17 +44,11 @@ https://besu.hyperledger.org/en/stable/private-networks/tutorials/ibft/#3-genera
 Deploying a smart contract to a private network:
 
 ```
-truffle migrate --reset --network besu
+truffle migrate --config truffle-config.cjs --reset --network besu
 ```
 
-Run the tx.js script:
+Run the txUsingWeb3.js script:
 
 ```
-node scripts/tx.js
-```
-
-To retrieve files from IPFS:
-
-```
-node --experimental-json-modules web3-storage/retrieve.js
+node src/scripts/txUsingWeb3.js --experimental-json-modules
 ```
