@@ -33,7 +33,7 @@ contract EHRSC {
 
     struct Person {
         address personAddress;
-        // add public key
+        // add Umbral public key
         string name;
         EntityClaim entityClaim;
         bool registered;
