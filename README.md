@@ -52,3 +52,9 @@ Run the txUsingWeb3.js script:
 ```
 node src/scripts/txUsingWeb3.js --experimental-json-modules
 ```
+
+Test proxy re-encryption script:
+
+```
+python src/pyUmbral/pre.py
+```

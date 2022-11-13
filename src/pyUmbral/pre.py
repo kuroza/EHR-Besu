@@ -68,7 +68,7 @@ print("\n5 Patient grants access to doctor by generating kfrags...\n")
 kfrags = generate_kfrags(delegating_sk=patient_secret_key, receiving_pk=doctor_public_key, signer=patient_signer, threshold=10, shares=20)
 
 print("\n******************************************************\n")
-print("6 Doctor retrieves encrypted files from IPFS and capsule...\n")
+print("6 Doctor retrieves encrypted files and capsule from IPFS...\n")
 # os.system("node ../web3-storage/file-retrieve.js")
 # os.system("ipfs get {cid}")
 
