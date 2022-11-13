@@ -48,14 +48,14 @@ contract EHRSC {
     }
 
     struct Bundle {
-        string bundleNumber;
+        string bundleCid;
         address doctorAddress;
     }
 
     struct Request {
         uint256 requestNo;
         address requester;
-        string bundleNumber;
+        string bundleCid;
     }
 
     // struct InsuranceCompany {}
@@ -168,32 +168,29 @@ contract EHRSC {
         return persons[msg.sender].verifiedPatient;
     }
 
-    function uploadBundle(address _patientAddress, string memory _bundleNumber)
-        public
-        onlyDoctor
-    {
+    function updateUploadedBundleInfo(
+        address _patientAddress,
+        string memory _bundleCid
+    ) public onlyDoctor {
         // // require verified patient
         // require(
         //     persons[_patientAddress].verifiedPatient,
         //     "Patient must be verified"
         // );
 
-        // store which doctor uploaded the latest bundle
-        Bundle memory newBundle = Bundle(_bundleNumber, msg.sender); // rather use bundleHash and msg.sender
-
-        // assign the bundleNo to patient for reference
-        persons[_patientAddress].bundle = newBundle;
+        Bundle memory newBundle = Bundle(_bundleCid, msg.sender);
+        persons[_patientAddress].bundle = newBundle; // assign the bundleNo to patient for reference
     }
 
-    function checkPatientBundleHash(address _patientAddress)
+    function getPatientBundleCid(address _patientAddress)
         public
         view
         returns (string memory)
     {
-        return persons[_patientAddress].bundle.bundleNumber;
+        return persons[_patientAddress].bundle.bundleCid;
     }
 
-    function requestBundle(address _patientAddress, string memory _bundleNumber)
+    function requestBundle(address _patientAddress, string memory _bundleCid)
         public
         onlyDoctor
     {
@@ -202,13 +199,13 @@ contract EHRSC {
             "Patient must be verified"
         ); // TODO: check bundle must exist
         uint256 count = persons[_patientAddress].requestCount;
-        Request memory newRequest = Request(count, msg.sender, _bundleNumber);
+        Request memory newRequest = Request(count, msg.sender, _bundleCid);
         persons[_patientAddress].requests.push(newRequest);
         persons[_patientAddress].requestCount = ++count;
         emit RequestedBundle(newRequest, _patientAddress);
     }
 
-    function checkPatientRequestCount()
+    function validatePatientRequestCount()
         public
         view
         onlyPatient
@@ -242,7 +239,6 @@ contract EHRSC {
         emit RequestedAppointment(newAppointment);
     }
 
-    // deployer of the smart contract can verify RA admins
     function verifyByOwner(address _personAddress) public onlyOwner {
         if (
             persons[_personAddress].entityClaim ==
@@ -280,8 +276,4 @@ contract EHRSC {
             emit InsuranceCompanyAdminVerified(persons[_personAddress]);
         }
     }
-
-    // TODO: function: Insurance company
-    // TODO: function: Hospital accepts appointment request
-    // TODO: function: Patient allow access to doctor or send re-encryption keys to NuCypher network
 }
